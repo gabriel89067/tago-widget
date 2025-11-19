@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Widget Externo</title>
+
+<style>
+    body {
+        background: transparent;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 10px;
+        color: white;
+    }
+
+    #conteudo {
+        padding: 20px;
+        background: #222;
+        border-radius: 10px;
+        display: none; /* começa oculto */
+    }
+</style>
+
+</head>
+<body>
+
+<div id="conteudo">
+    <h2>Widget Ativado</h2>
+    <p>A flag está em 1 — conteúdo visível.</p>
+</div>
+
+<script>
+/*
+   A lógica funciona assim:
+
+   O dashboard TagoIO irá enviar os parâmetros via URL.
+   Exemplo: ?habilita_widget=1
+
+   Pegamos esse valor da URL e decidimos se mostramos ou não.
+*/
+
+function obterParametro(nome) {
+    const params = new URLSearchParams(window.location.search);
+    return params.get(nome);
+}
+
+function atualizarWidget() {
+    const flag = obterParametro("habilita_widget");
+
+    if (flag === "1") {
+        document.getElementById("conteudo").style.display = "block";
+    } else {
+        document.getElementById("conteudo").style.display = "none";
+    }
+}
+
+// Executar ao carregar
+atualizarWidget();
+</script>
+
+</body>
+</html>
