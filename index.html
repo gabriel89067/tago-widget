@@ -45,7 +45,7 @@ function obterParametro(nome) {
 }
 
 function atualizarWidget() {
-    const flag = obterParametro("habilita_widget");
+   const flag = obterParametro("habilita_widget") || "0";
 
     if (flag === "1") {
         document.getElementById("conteudo").style.display = "block";
