@@ -1,16 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>TagoIO Custom Widget</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript" src="https://admin.tago.io/dist/custom-widget.min.js"></script>
+  <title>My Widget</title>
+  <style>
+    #send-data-button {
+      display: none; /* Inicia oculto */
+    }
+  </style>
 </head>
 <body>
-    <div id="widget-container">
-        <h1>Conteúdo do Widget</h1>
-        <p>Visível apenas quando a flag for 1.</p>
-    </div>
-    
-    <script src="https://js.tago.io/tagoio-sdk/tagoio-sdk.min.js"></script>
-    <script src=" https://gabriel89067.github.io/tago-widget/widget.js"></script>
+  <button id="send-data-button" onclick="sendData()">
+    Send data
+  </button>
+
+  <script>
+    function sendData() {
+      var data = {
+        variable: "my_variable2",
+        value: Math.random(),
+      };
+      window.TagoIO.sendData(data);
+    }
+
+    // --- Nova Função para Manipular a Visibilidade ---
+    function updateButtonVisibility(flag_value) {
+      const button = document.getElementById('send-data-button');
+      
+      // Converte o valor para número e verifica se é 1
+      if (flag_value == 1) {
+        button.style.display = 'block'; // Torna visível
+      } else {
+        button.style.display = 'none'; // Torna invisível
+      }
+    }
+    // -------------------------------------------------
+
+    window.TagoIO.onStart((widget) => {
+      window.widget = widget;
+      const display = widget.display;
+      const parameters = display.parameters;
+
+      
+      // 🔄 Adicione um listener para quando o TagoIO enviar novos dados
+      // Este método é chamado toda vez que os dados na Dashboad/Widget são atualizados
+      widget.onDataUpdate((data) => {
+        // 🔎 Procura o valor da variável 'habilite_flag' nos dados
+        
+        const flagData = (parameters[0] === 'habilite_flag') ? 0 : 1;
+       
+
+
+        if (flagData && flagData.value !== undefined) {
+          // Chama a função para atualizar a visibilidade
+          updateButtonVisibility(flagData.value);
+        }
+      });
+    });
+
+  </script>
+
+  <script>
+    window.TagoIO.ready();
+  </script>
 </body>
 </html>
